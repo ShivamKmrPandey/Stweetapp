@@ -1,0 +1,19 @@
+.sbcontainer {
+    background-position: inherit;
+}
+#sbst-box {
+    float:left;
+    width:500px;
+    
+}
+#sbnd-box {
+    float:left;
+    width:20px;
+    height:20px;
+    
+}
+
+.searchinput{
+    width:500px;
+    height: 25px;
+}
