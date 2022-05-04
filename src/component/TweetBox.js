@@ -1,29 +1,20 @@
 import React, { Component } from "react";
 import "./TweetBox.css"
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
 import TweetDataService from "../services/TweetDataService";
 import AuthService from "../services/auth.service";
-
-const required = value => {
-  if (!value) {
-    return (
-      <div className="alert alert-danger" role="alert">
-        This field is required!
-      </div>
-    );
-  }
-};
 
 class TweetBox extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
-    
+    this.onChangeLoginId = this.onChangeLoginId.bind(this);
     this.state = {
       username: "",
+      loginId:"",
       loading: false,
       message: "",
       user: AuthService.getCurrentUser()
@@ -36,7 +27,11 @@ class TweetBox extends Component {
     });
   }
 
-  
+  onChangeLoginId(e) {
+    this.setState({
+      loginId: e.target.value
+    });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -46,11 +41,10 @@ class TweetBox extends Component {
     });
     this.form.validateAll();
     if (this.checkBtn.context._errors.length === 0) {
-      const {user} = this.state;
-      var loginId = user.loginId;
-      TweetDataService.postTweet(loginId,this.state.username).then(
+      
+      TweetDataService.postTweet(this.state.username,this.state.user).then(
         () => {
-          
+
           window.location.reload();
         },
         error => {
@@ -73,61 +67,61 @@ class TweetBox extends Component {
     }
   }
   render() {
-    const {user} = this.state;
     
+
     return (
-      
-        <div className="tweetBox">
-         
-          <Form
-            onSubmit={this.handleSubmit}
-            ref={c => {
-              this.form = c;
-            }}
-          >
-            <div className="form-group">
-              <label className="post" >Want To Tweet Something?..</label>
-              <label className="inputName"   htmlFor="username">@{user.loginId}</label>
+
+      <div className="tweetBox">
+
+        <Form
+          onSubmit={this.handleSubmit}
+          ref={c => {
+            this.form = c;
+          }}
+        >
+          <div className="form-group">
+            <label className="post" >Want To Tweet Something?..</label>
+          </div>
+
+          <div>
+          <textarea
+              type="text"
+              className="form-control"
+              name="username"
+              placeholder="Enter Your Tweet Here.."
+              value={this.state.username}
+              onChange={this.onChangeUsername}
               
-              <textarea
-                type="text"
-                className="form-control"
-                name="username"
-                placeholder = "Enter Your Tweet Here.."
-                value={this.state.username}
-                onChange={this.onChangeUsername}
-                validations={[required]}
-              />
-            </div>
-            
-            
-            <div className="form-group">
-              <button
-                className="btn btn-primary btn-block"
-                disabled={this.state.loading}
-              >
-                {this.state.loading && (
-                  <span className="spinner-border spinner-border-sm"></span>
-                )}
-                <span>Tweet</span>
-              </button>
-            </div>
-            {this.state.message && (
-              <div className="form-group">
-                <div className="alert alert-danger" role="alert">
-                  {this.state.message}
-                </div>
-              </div>
-            )}
-            <CheckButton
-              style={{ display: "none" }}
-              ref={c => {
-                this.checkBtn = c;
-              }}
             />
-          </Form>
-        </div>
-      
+          </div>
+ 
+          <div className="form-group">
+            <button
+              className="btn btn-primary btn-block"
+              disabled={this.state.loading}
+            >
+              {this.state.loading && (
+                <span className="spinner-border spinner-border-sm"></span>
+              )}
+              <span>Tweet</span>
+            </button>
+          </div>
+          {this.state.message && (
+            <div className="form-group">
+              <div className="alert alert-danger" role="alert">
+                {this.state.message}
+              </div>
+            </div>
+          )}
+          <CheckButton
+            style={{ display: "none" }}
+            ref={c => {
+              this.checkBtn = c;
+            }}
+          />
+        </Form>
+      </div>
+
     );
   }
 }

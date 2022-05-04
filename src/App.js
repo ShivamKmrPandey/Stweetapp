@@ -92,6 +92,10 @@ const ViewAllUsers = () => {
             <div id="nd-box">
                 <ViewUsers/>
             </div>
+
+            <div id="rd-box">
+                <TweetBox/>
+            </div>
               
         </div>
       <Footer/>
@@ -183,13 +187,13 @@ const App = () => {
       <Route exact path="/signUp">
       <Register /> 
       </Route>
-      <ProtectedRoute exact path="/home">
+      <ProtectedRoute exact path="/AllUsers">
       <ViewAllTweets />
       </ProtectedRoute>
       <ProtectedRoute exact path="/viewMyTweet">
       <Home />
       </ProtectedRoute>
-      <ProtectedRoute exact path="/AllUsers">
+      <ProtectedRoute exact path="/home">
       <ViewAllUsers />
       </ProtectedRoute>
       <ProtectedRoute exact path="/logout">

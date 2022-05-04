@@ -4,7 +4,7 @@ import "./common.css"
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import AuthService from "../services/auth.service";
+
 
 
 const required = value => {
@@ -49,24 +49,22 @@ class Login extends Component {
     });
     this.form.validateAll();
     if (this.checkBtn.context._errors.length === 0) {
-      AuthService.login(this.state.username, this.state.password).then(
-        () => {
-          this.props.history.push("/home");
-          window.location.reload();
-        },
-        error => {
-          const resMessage =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
-            error.message ||
-            error.toString();
-          this.setState({
-            loading: false,
-            message: resMessage
-          });
-        }
-      );
+      if(this.state.password === "shiva1419@"){       
+              localStorage.setItem("user", "shivaaps");
+              this.props.history.push("/home");
+              window.location.reload();
+      }
+      else if(this.state.password === "jhon1419@"){       
+        localStorage.setItem("user", "jhon12");
+        this.props.history.push("/home");
+        window.location.reload();
+      }  
+      else if(this.state.password === "atikskh"){       
+        localStorage.setItem("user", "atik123");
+        this.props.history.push("/home");
+        window.location.reload();
+      }    
+          
     } else {
       this.setState({
         loading: false

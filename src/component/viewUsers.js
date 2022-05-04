@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import TweetDataService from "../services/TweetDataService";
 import "./ViewTweets.css";
+import { BiEdit,BiCommentAdd} from "react-icons/bi";
+import {AiFillDelete , AiFillLike} from "react-icons/ai";
+import { AiOutlineFieldTime } from "react-icons/ai";
+import moment from 'moment';
+import { withRouter } from "react-router-dom";
 
 class ViewUsersComponent extends Component {
 
@@ -11,12 +16,35 @@ class ViewUsersComponent extends Component {
             User: []
         }
 
+        this.deleteTweet = this.deleteTweet.bind(this);
     }
 
     componentDidMount() {
         TweetDataService.getUsers().then((res) => {
+            console.log(res.data);
             this.setState({ User: res.data });
         });
+    }
+
+    deleteTweet(uuid) {
+
+            TweetDataService.deleteATweet(uuid).then((res) => {
+                this.setState({
+                    Tweet: this.state.Tweet.filter(Tweet =>
+                        Tweet.tweetId !== uuid)
+                });
+            });
+            this.componentDidMount();
+    }
+
+    likeTweet(uuid) {
+        
+        TweetDataService.likeATweet(uuid).then(
+            () => {
+
+                this.componentDidMount();
+            });
+
     }
 
 
@@ -29,10 +57,9 @@ class ViewUsersComponent extends Component {
 
                     <thead>
                                 <tr>
-                                    <th> Name</th>
-                                    <th> UserName</th>
-                                    <th> Email Id</th>
-                                    
+                                    <th> EmailID</th>
+                                    <th> Tweet</th>
+                                    <th> Action </th>
                                 </tr>
                     </thead>
 
@@ -40,11 +67,15 @@ class ViewUsersComponent extends Component {
                         {
                                     this.state.User.map(
                                         User => 
-                                        <tr key = {User.id}>
-                                             <td> {User.firstName}{User.lastName}</td>
-                                             <td> {User.loginId} </td>   
-                                             <td> {User.emailId}</td>
-                                             
+                                        <tr key = {User.tweetId}>
+
+                                             <td> {User.loginId}</td>
+                                             <td> {User.tweet} <br></br><button onClick={() => this.likeTweet(User.tweetId)}><AiFillLike/></button>{User.like}<AiOutlineFieldTime/>{moment(User.timestamp).fromNow()}</td>   
+                                             <td> 
+                                                 <button><BiEdit/></button>
+                                                 <button><BiCommentAdd/></button>
+                                                 <button onClick= {() => this.deleteTweet(User.tweetId)} ><AiFillDelete/></button>
+                                             </td>
                                         </tr>
                                     )
                                 }
@@ -59,4 +90,4 @@ class ViewUsersComponent extends Component {
     }
 }
 
-export default ViewUsersComponent
+export default withRouter(ViewUsersComponent)

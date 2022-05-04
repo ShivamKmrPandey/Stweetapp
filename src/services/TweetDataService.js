@@ -2,12 +2,13 @@ import axios from 'axios';
 //import authHeader from './auth.header';
 
 const API_URL = "http://localhost:8080/api/v1.0/tweets/";
+// const HOST_URL = "http://StweetLB-294762247.us-east-1.elb.amazonaws.com/tweet";
+
+const HOST_URL = "http://tweet-project-albN-319698381.us-east-1.elb.amazonaws.com/tweet";
 
 // const headers = {
 //    Authorization: 'Bearer '+ authHeader(),
-//    'Access-Control-Allow-Origin': '*'
-   
-   
+//    'Access-Control-Allow-Origin': '*'  
 // };
 
 class TweetService {
@@ -23,13 +24,27 @@ class TweetService {
     return axios.get(API_URL + 'byUuid/' + uuid);
   }
 
+  // getUsers() {
+  //   return axios.get(API_URL + 'users/all');
+  // }
+
   getUsers() {
-    return axios.get(API_URL + 'users/all');
+    return axios.get(HOST_URL + '/list/all');
   }
 
-  postTweet(loginId,postdata) {
-    return axios.post(API_URL + loginId+'/add' ,
-                                postdata, 
+  // postTweet(loginId,postdata) {
+  //   return axios.post(API_URL + loginId+'/add' ,
+  //                               postdata, 
+  //                               {headers: {'Content-Type': 'application/json'}
+  //                             });
+  // }
+
+  postTweet(tweet,loginId) {
+    return axios.post(HOST_URL ,
+                                {
+                                  tweet,
+                                  loginId
+                                } ,
                                 {headers: {'Content-Type': 'application/json'}
                               });
   }
@@ -40,8 +55,8 @@ class TweetService {
                             });
   }
 
-  likeATweet(loginId, id){
-    return axios.put(API_URL + loginId + '/like/' +id );
+  likeATweet(id){
+    return axios.put(HOST_URL + '/like/' +id );
   }
 
   replyTweet(loginId,id,postdata){
@@ -50,8 +65,8 @@ class TweetService {
                                                      });
   }
 
-  deleteATweet(loginId,id){
-    return axios.delete(API_URL + loginId + '/delete/' +id 
+  deleteATweet(id){
+    return axios.delete(HOST_URL + '/delete/' +id 
                           ).then(response => {
                             if (response.data) {
                               console.log(response.message);

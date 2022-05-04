@@ -20,7 +20,7 @@ export default class Profile extends Component {
               <Card style={{ width: '8rem' }}>
               <Card.Img variant="top" src="https://img.icons8.com/external-avatar-andi-nur-abdillah/344/external-avatar-business-avatar-circle-avatar-andi-nur-abdillah-20.png" />
               <Card.Body>
-              <Card.Title><small>@{user.loginId}</small></Card.Title>
+              <Card.Title><small>@{user}</small></Card.Title>
               </Card.Body>
               </Card>
               </div>
