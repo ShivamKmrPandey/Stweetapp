@@ -68,6 +68,7 @@ class TweetBox extends Component {
   }
   render() {
     
+    const {user} = this.state;
 
     return (
 
@@ -84,6 +85,11 @@ class TweetBox extends Component {
           </div>
 
           <div>
+            &nbsp;
+            <div>
+              <label className="namebox">&nbsp;&nbsp;&nbsp;&nbsp;<strong>{user}</strong></label>
+            </div>
+
           <textarea
               type="text"
               className="form-control"

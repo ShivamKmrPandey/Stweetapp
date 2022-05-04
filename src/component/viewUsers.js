@@ -5,6 +5,7 @@ import { BiEdit,BiCommentAdd} from "react-icons/bi";
 import {AiFillDelete , AiFillLike} from "react-icons/ai";
 import { AiOutlineFieldTime } from "react-icons/ai";
 import moment from 'moment';
+import Button from 'react-bootstrap/Button';
 import { withRouter } from "react-router-dom";
 
 class ViewUsersComponent extends Component {
@@ -50,6 +51,7 @@ class ViewUsersComponent extends Component {
 
 
     render() {
+         
         return (
             <div>
                 <div className="row">
@@ -70,11 +72,15 @@ class ViewUsersComponent extends Component {
                                         <tr key = {User.tweetId}>
 
                                              <td> {User.loginId}</td>
-                                             <td> {User.tweet} <br></br><button onClick={() => this.likeTweet(User.tweetId)}><AiFillLike/></button>{User.like}<AiOutlineFieldTime/>{moment(User.timestamp).fromNow()}</td>   
                                              <td> 
-                                                 <button><BiEdit/></button>
-                                                 <button><BiCommentAdd/></button>
-                                                 <button onClick= {() => this.deleteTweet(User.tweetId)} ><AiFillDelete/></button>
+                                                 {User.tweet} <br></br>
+                                                 <Button onClick={() => this.likeTweet(User.tweetId)} variant="outline-info"><AiFillLike/></Button>{User.like}<br></br>
+                                                 Posted at : <AiOutlineFieldTime/> {moment.utc(User.timestamp).local().format()}
+                                              </td>   
+                                             <td> 
+                                                 <Button variant="outline-secondary"><BiEdit/></Button>&nbsp;&nbsp;
+                                                 <Button variant="outline-primary"><BiCommentAdd/></Button>&nbsp;&nbsp;
+                                                 <Button onClick= {() => this.deleteTweet(User.tweetId)} variant="outline-danger" ><AiFillDelete/></Button>
                                              </td>
                                         </tr>
                                     )
